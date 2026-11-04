@@ -1,0 +1,24 @@
+{
+  "name": "qa-swag-labs-pw-e2e",
+  "version": "1.0.0",
+  "description": "Playwright learning project",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Z3L3NIY/qa-swag-labs-pw-e2e.git"
+  },
+  "author": "Serhii Husenko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Z3L3NIY/qa-swag-labs-pw-e2e/issues"
+  },
+  "homepage": "https://github.com/Z3L3NIY/qa-swag-labs-pw-e2e#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6"
+  },
+  "dependencies": {
+    "dotenv": "^18.0.9"
+  }
+}
