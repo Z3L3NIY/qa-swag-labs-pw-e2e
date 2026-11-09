@@ -6,4 +6,8 @@ export class BasePage {
     constructor(page: Page) {
         this.page = page;
     }
+
+    public getUrl() {
+        return this.page.url();
+    }
 }

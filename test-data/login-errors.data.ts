@@ -2,6 +2,8 @@ export const Errors = {
     fieldsAreRequired: "Epic sadface: Username is required",
     usernameIsRequired: "Epic sadface: Username is required",
     passwordIsRequired: "Epic sadface: Password is required",
+    invalidCredentials:
+        "Epic sadface: Username and password do not match any user in this service",
     invalidUsername:
         "Epic sadface: Username and password do not match any user in this service",
     invalidPassword:
