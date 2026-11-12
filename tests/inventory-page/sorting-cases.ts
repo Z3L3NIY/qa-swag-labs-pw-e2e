@@ -1,12 +1,11 @@
 import { expect } from "@playwright/test";
 import { InventoryPage } from "../../pages/InventoryPage/InventoryPage";
+import { parsePrice } from "../../utils/parse-item-price";
 
 async function getPrices(inventoryPage: InventoryPage) {
     const allPrices =
         await inventoryPage.locators.inventoryItemPrice.allInnerTexts();
-    const allIntPrices = allPrices.map((price) =>
-        parseFloat(price.replace("$", "")),
-    );
+    const allIntPrices = allPrices.map((price) => parsePrice(price));
     return allIntPrices;
 }
 

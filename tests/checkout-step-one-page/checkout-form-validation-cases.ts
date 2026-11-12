@@ -11,9 +11,9 @@ export const testsData = [
         firstName: credentials.standardUser.checkout.firstName,
         lastName: credentials.standardUser.checkout.lastName,
         postalCode: credentials.standardUser.checkout.postalCode,
-        verify: async (checkoutStepTwoPage: CheckoutStepTwoPage) => {
+        verify: async (checkoutStepOnePage: CheckoutStepOnePage) => {
             await expect
-                .poll(() => checkoutStepTwoPage.getUrl())
+                .poll(() => checkoutStepOnePage.getUrl())
                 .toMatch(/\/checkout-step-two\.html$/);
         },
     },
