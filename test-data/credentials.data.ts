@@ -4,6 +4,11 @@ export const credentials = {
     standardUser: {
         username: required("STANDARD_USER"),
         password: required("PASSWORD"),
+        checkout: {
+            firstName: "Inigo",
+            lastName: "Montoya",
+            postalCode: "12345",
+        },
     },
     lockedOutUser: {
         username: required("LOCKED_OUT_USER"),

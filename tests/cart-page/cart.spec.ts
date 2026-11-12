@@ -4,16 +4,19 @@ import { InventoryPage } from "../../pages/InventoryPage/InventoryPage";
 import { credentials } from "../../test-data/credentials.data";
 import { items } from "../../test-data/inventory.data";
 import { CartPage } from "../../pages/CartPage/CartPage";
+import { CheckoutStepOnePage } from "../../pages/CheckoutStepOnePage/CheckoutStepOnePage";
 
 test.describe("Cart page tests", () => {
     let loginPage: LoginPage;
     let inventoryPage: InventoryPage;
     let cartPage: CartPage;
+    let checkoutStepOnePage: CheckoutStepOnePage;
 
     test.beforeEach(async ({ page }) => {
         loginPage = new LoginPage(page);
         inventoryPage = new InventoryPage(page);
         cartPage = new CartPage(page);
+        checkoutStepOnePage = new CheckoutStepOnePage(page);
         await loginPage.open();
         await loginPage.login(
             credentials.standardUser.username,
@@ -39,11 +42,17 @@ test.describe("Cart page tests", () => {
         ).toEqual(allTitles);
     });
 
-    test("Product can be removed from the Cart page", async ({ page }) => {
+    test("Removed products aren't present on the Cart page", async ({
+        page,
+    }) => {
         for (const item of items) {
             await inventoryPage.addToCartByTitle(item.title);
         }
         await inventoryPage.openCart();
+
+        expect(await cartPage.locators.inventoryItem.count()).toBe(
+            items.length,
+        );
 
         for (const item of items) {
             await cartPage.removeFromCartByTitle(item.title);
@@ -52,11 +61,12 @@ test.describe("Cart page tests", () => {
         expect(await cartPage.locators.inventoryItem.count()).toBe(0);
     });
 
-    test("Continue Shopping button opens Inventory page", async ({ page }) => {
+    test("Cancel (Checkout) button opens Cart page", async ({ page }) => {
         await inventoryPage.openCart();
-        await cartPage.continueShopping();
+        await cartPage.checkout();
+        await checkoutStepOnePage.cancel();
         await expect
-            .poll(() => cartPage.getUrl())
-            .toMatch(/\/inventory\.html$/);
+            .poll(() => inventoryPage.getUrl())
+            .toMatch(/\/cart\.html$/);
     });
 });
