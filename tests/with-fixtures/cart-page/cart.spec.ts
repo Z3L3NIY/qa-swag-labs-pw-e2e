@@ -3,18 +3,10 @@ import { credentials } from "../../../test-data/credentials.data";
 import { items } from "../../../test-data/inventory.data";
 
 test.describe("Cart page tests", () => {
-    test.beforeEach(async ({ loginPage }) => {
-        await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
-    });
-
     test("Cart page opens", async ({ inventoryPage, cartPage }) => {
         await inventoryPage.openCart();
 
-        await expect.poll(() => cartPage.getUrl()).toMatch(/\/cart\.html$/);
+        await expect(cartPage.currentPage).toHaveURL(/\/cart\.html$/);
     });
 
     test("Added products are present on the Cart page", async ({
@@ -60,8 +52,6 @@ test.describe("Cart page tests", () => {
         await inventoryPage.openCart();
         await cartPage.checkout();
         await checkoutStepOnePage.cancel();
-        await expect
-            .poll(() => inventoryPage.getUrl())
-            .toMatch(/\/cart\.html$/);
+        await expect(inventoryPage.currentPage).toHaveURL(/\/cart\.html$/);
     });
 });

@@ -1,14 +1,9 @@
 import { required } from "../utils/env-var-check";
 
-export const credentials = {
+const credentials = {
     standardUser: {
         username: required("STANDARD_USER"),
         password: required("PASSWORD"),
-        checkout: {
-            firstName: "Inigo",
-            lastName: "Montoya",
-            postalCode: "12345",
-        },
     },
     lockedOutUser: {
         username: required("LOCKED_OUT_USER"),
@@ -30,8 +25,36 @@ export const credentials = {
         username: required("VISUAL_USER"),
         password: required("PASSWORD"),
     },
-    invalidUser: {
+    invalidUsernameUser: {
+        username: "invalid_user",
+        password: required("PASSWORD"),
+    },
+    invalidPasswordUser: {
+        username: required("STANDARD_USER"),
+        password: "invalid_password",
+    },
+    invalidUsernameAndPasswordUser: {
         username: "invalid_user",
         password: "invalid_password",
     },
+    emptyUsernameAndPasswordUser: {
+        username: "",
+        password: "",
+    },
+    emptyUsernameUser: {
+        username: "",
+        password: required("PASSWORD"),
+    },
+    emptyPasswordUser: {
+        username: required("STANDARD_USER"),
+        password: "",
+    },
 } as const;
+
+const checkout_user = {
+    firstName: "Inigo",
+    lastName: "Montoya",
+    postalCode: "12345",
+} as const;
+
+export { credentials, checkout_user };

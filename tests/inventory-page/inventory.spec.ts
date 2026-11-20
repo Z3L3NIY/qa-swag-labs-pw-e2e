@@ -16,10 +16,7 @@ test.describe("Inventory page tests", () => {
         inventoryPage = new InventoryPage(page);
         cartPage = new CartPage(page);
         await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
+        await loginPage.login(credentials.standardUser);
     });
 
     test("The correct price is displayed for each item", async ({ page }) => {
@@ -51,8 +48,7 @@ test.describe("Inventory page tests", () => {
     test("Continue Shopping button opens Inventory page", async ({ page }) => {
         await inventoryPage.openCart();
         await cartPage.continueShopping();
-        await expect
-            .poll(() => inventoryPage.getUrl())
-            .toMatch(/\/inventory\.html$/);
+
+        await expect(inventoryPage.currentPage).toHaveURL(/\/inventory\.html$/);
     });
 });

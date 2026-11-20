@@ -4,14 +4,6 @@ import { items } from "../../../test-data/inventory.data";
 import { testsData } from "./sorting-cases";
 
 test.describe("Inventory page tests", () => {
-    test.beforeEach(async ({ loginPage }) => {
-        await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
-    });
-
     test("The correct price is displayed for each item", async ({
         inventoryPage,
     }) => {
@@ -46,8 +38,6 @@ test.describe("Inventory page tests", () => {
     }) => {
         await inventoryPage.openCart();
         await cartPage.continueShopping();
-        await expect
-            .poll(() => inventoryPage.getUrl())
-            .toMatch(/\/inventory\.html$/);
+        await expect(inventoryPage.currentPage).toHaveURL(/\/inventory\.html$/);
     });
 });

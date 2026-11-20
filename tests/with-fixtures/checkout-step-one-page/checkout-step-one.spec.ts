@@ -4,12 +4,7 @@ import { testsData } from "./checkout-form-validation-cases";
 import { items } from "../../../test-data/inventory.data";
 
 test.describe("Checkout (Step One) page tests", () => {
-    test.beforeEach(async ({ loginPage, inventoryPage, cartPage }) => {
-        await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
+    test.beforeEach(async ({ inventoryPage, cartPage }) => {
         await inventoryPage.addToCartByTitle(items[0].title);
         await inventoryPage.openCart();
         await cartPage.checkout();
@@ -18,19 +13,25 @@ test.describe("Checkout (Step One) page tests", () => {
     test("Checkout button opens Checkout (Step One) page", async ({
         checkoutStepOnePage,
     }) => {
-        await expect
-            .poll(() => checkoutStepOnePage.getUrl())
-            .toMatch(/\/checkout-step-one\.html$/);
+        await expect(checkoutStepOnePage.currentPage).toHaveURL(
+            /\/checkout-step-one\.html$/,
+        );
     });
 
-    for (const testData of testsData) {
-        test(testData.title, async ({ checkoutStepOnePage }) => {
+    for (const {
+        title,
+        firstName,
+        lastName,
+        postalCode,
+        verify,
+    } of testsData) {
+        test(title, async ({ checkoutStepOnePage }) => {
             await checkoutStepOnePage.submitCheckoutForm(
-                testData.firstName,
-                testData.lastName,
-                testData.postalCode,
+                firstName,
+                lastName,
+                postalCode,
             );
-            await testData.verify(checkoutStepOnePage);
+            await verify(checkoutStepOnePage);
         });
     }
 });

@@ -4,6 +4,8 @@ import { InventoryPage } from "../pages/InventoryPage/InventoryPage";
 import { CartPage } from "../pages/CartPage/CartPage";
 import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage/CheckoutStepOnePage";
 import { CheckoutStepTwoPage } from "../pages/CheckoutStepTwoPage/CheckoutStepTwoPage";
+import { credentials } from "../test-data/credentials.data";
+import { MenuComponent } from "../components/MenuComponent/MenuComponent";
 
 type CustomFixtures = {
     loginPage: LoginPage;
@@ -11,9 +13,31 @@ type CustomFixtures = {
     cartPage: CartPage;
     checkoutStepOnePage: CheckoutStepOnePage;
     checkoutStepTwoPage: CheckoutStepTwoPage;
+    login: void;
+    logout: void;
+    userToLogin: { username: string; password: string };
+    menuComponent: MenuComponent;
 };
 
 const test = base.extend<CustomFixtures>({
+    login: [
+        async ({ loginPage, userToLogin }, use) => {
+            await loginPage.open();
+            await loginPage.login(userToLogin);
+            await use();
+        },
+        { auto: true },
+    ],
+    logout: [
+        async ({ menuComponent }, use) => {
+            await use();
+            await menuComponent.open();
+            await menuComponent.resetAppState();
+            await menuComponent.close();
+        },
+        { auto: true },
+    ],
+    userToLogin: credentials.standardUser,
     loginPage: async ({ page }, use) => {
         const loginPage = new LoginPage(page);
 
@@ -38,6 +62,11 @@ const test = base.extend<CustomFixtures>({
         const checkoutStepTwoPage = new CheckoutStepTwoPage(page);
 
         await use(checkoutStepTwoPage);
+    },
+    menuComponent: async ({ page }, use) => {
+        const menuComponent = new MenuComponent(page);
+
+        await use(menuComponent);
     },
 });
 

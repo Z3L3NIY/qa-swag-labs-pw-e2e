@@ -18,16 +18,13 @@ test.describe("Cart page tests", () => {
         cartPage = new CartPage(page);
         checkoutStepOnePage = new CheckoutStepOnePage(page);
         await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
+        await loginPage.login(credentials.standardUser);
     });
 
     test("Cart page opens", async ({ page }) => {
         await inventoryPage.openCart();
 
-        await expect.poll(() => cartPage.getUrl()).toMatch(/\/cart\.html$/);
+        await expect(cartPage.currentPage).toHaveURL(/\/cart\.html$/);
     });
 
     test("Added products are present on the Cart page", async ({ page }) => {
@@ -65,8 +62,7 @@ test.describe("Cart page tests", () => {
         await inventoryPage.openCart();
         await cartPage.checkout();
         await checkoutStepOnePage.cancel();
-        await expect
-            .poll(() => inventoryPage.getUrl())
-            .toMatch(/\/cart\.html$/);
+
+        await expect(inventoryPage.currentPage).toHaveURL(/\/cart\.html$/);
     });
 });
