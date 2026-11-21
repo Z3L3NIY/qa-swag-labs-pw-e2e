@@ -1,4 +1,4 @@
-import { Locator, Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { BaseComponent } from "../BaseComponent/BaseComponent";
 import { MenuComponentLocator } from "./MenuComponentLocator";
 
@@ -12,7 +12,14 @@ export class MenuComponent extends BaseComponent {
     }
 
     public async open() {
-        await this.locators.burgerBT.click();
+        await expect(async () => {
+            if (!(await this.locators.logOutLink.isVisible())) {
+                await this.locators.burgerBT.click();
+            }
+            await expect(this.locators.logOutLink).toBeVisible({
+                timeout: 1_000,
+            });
+        }).toPass({ timeout: 10_000 });
     }
 
     public async close() {

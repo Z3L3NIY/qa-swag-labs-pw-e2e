@@ -31,9 +31,11 @@ const test = base.extend<CustomFixtures>({
     logout: [
         async ({ menuComponent }, use) => {
             await use();
-            await menuComponent.open();
-            await menuComponent.resetAppState();
-            await menuComponent.close();
+            if (await menuComponent.locators.burgerBT.isVisible()) {
+                await menuComponent.open();
+                await menuComponent.resetAppState();
+                await menuComponent.logout();
+            }
         },
         { auto: true },
     ],

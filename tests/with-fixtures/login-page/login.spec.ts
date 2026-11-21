@@ -1,4 +1,4 @@
-import { expect, test } from "../../../fixtures/fixtures";
+import { test } from "../../../fixtures/fixtures";
 import { testsData } from "./login-form-validation-cases";
 
 test.describe("Login page tests", () => {
