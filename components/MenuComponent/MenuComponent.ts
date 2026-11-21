@@ -13,10 +13,19 @@ export class MenuComponent extends BaseComponent {
 
     public async open() {
         await expect(async () => {
-            if (!(await this.locators.logOutLink.isVisible())) {
+            if (
+                (await this.locators.burgerMenuWrap.getAttribute(
+                    "aria-hidden",
+                )) !== "false"
+            ) {
                 await this.locators.burgerBT.click();
             }
-            await expect(this.locators.logOutLink).toBeVisible({
+            await expect(this.locators.burgerMenuWrap).toHaveAttribute(
+                "aria-hidden",
+                "false",
+                { timeout: 1_000 },
+            );
+            await expect(this.locators.logOutLink).toBeInViewport({
                 timeout: 1_000,
             });
         }).toPass({ timeout: 10_000 });
