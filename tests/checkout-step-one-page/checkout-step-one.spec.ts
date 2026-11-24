@@ -19,19 +19,16 @@ test.describe("Checkout (Step One) page tests", () => {
         cartPage = new CartPage(page);
         checkoutStepOnePage = new CheckoutStepOnePage(page);
         await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
+        await loginPage.login(credentials.standardUser);
         await inventoryPage.addToCartByTitle(items[0].title);
         await inventoryPage.openCart();
         await cartPage.checkout();
     });
 
     test("Checkout button opens Checkout (Step One) page", async ({ page }) => {
-        await expect
-            .poll(() => checkoutStepOnePage.getUrl())
-            .toMatch(/\/checkout-step-one\.html$/);
+        await expect(checkoutStepOnePage.currentPage).toHaveURL(
+            /\/checkout-step-one\.html$/,
+        );
     });
 
     for (const testData of testsData) {

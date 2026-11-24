@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 
-export class BasePageLocator {
+export abstract class BasePageLocator {
     protected readonly page: Page;
 
     constructor(page: Page) {

@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { LoginPage } from "../../pages/LoginPage/LoginPage";
 import { InventoryPage } from "../../pages/InventoryPage/InventoryPage";
-import { credentials } from "../../test-data/credentials.data";
+import { credentials, checkout_user } from "../../test-data/credentials.data";
 import { CartPage } from "../../pages/CartPage/CartPage";
 import { CheckoutStepOnePage } from "../../pages/CheckoutStepOnePage/CheckoutStepOnePage";
 import { items } from "../../test-data/inventory.data";
@@ -21,27 +21,24 @@ test.describe("Checkout (Step One) page tests", () => {
         checkoutStepOnePage = new CheckoutStepOnePage(page);
         checkoutStepTwoPage = new CheckoutStepTwoPage(page);
         await loginPage.open();
-        await loginPage.login(
-            credentials.standardUser.username,
-            credentials.standardUser.password,
-        );
+        await loginPage.login(credentials.standardUser);
         await inventoryPage.addToCartByTitle(items[0].title);
         await inventoryPage.addToCartByTitle(items[1].title);
         await inventoryPage.openCart();
         await cartPage.checkout();
         await checkoutStepOnePage.submitCheckoutForm(
-            credentials.standardUser.checkout.firstName,
-            credentials.standardUser.checkout.lastName,
-            credentials.standardUser.checkout.postalCode,
+            checkout_user.firstName,
+            checkout_user.lastName,
+            checkout_user.postalCode,
         );
     });
 
     test("Continue (Checkout Step One) button opens Checkout Step Two page", async ({
         page,
     }) => {
-        await expect
-            .poll(() => checkoutStepTwoPage.getUrl())
-            .toMatch(/\/checkout-step-two\.html$/);
+        await expect(checkoutStepTwoPage.currentPage).toHaveURL(
+            /\/checkout-step-two\.html$/,
+        );
     });
 
     test("Item total is accurately calculated", async ({ page }) => {

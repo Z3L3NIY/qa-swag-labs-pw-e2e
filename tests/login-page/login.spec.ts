@@ -12,7 +12,7 @@ test.describe("Login page tests", () => {
 
     for (const testData of testsData) {
         test(testData.title, async ({ page }) => {
-            await loginPage.login(testData.userName, testData.password);
+            await loginPage.login(testData.userToLogin);
             await testData.verify(loginPage);
         });
     }

@@ -4,21 +4,23 @@ import { LoginPage } from "../../pages/LoginPage/LoginPage";
 import { loginErrors } from "../../test-data/forms-validation-errors.data";
 import { errorMessageCheck } from "../../utils/form-error-message-check";
 
+type LoginCase = {
+    title: string;
+    userToLogin: { username: string; password: string };
+    verify: (loginPage: LoginPage) => Promise<void>;
+};
+
 export const testsData = [
     {
         title: "Login with valid credentials",
-        userName: credentials.standardUser.username,
-        password: credentials.standardUser.password,
+        userToLogin: credentials.standardUser,
         verify: async (loginPage: LoginPage) => {
-            await expect
-                .poll(() => loginPage.getUrl())
-                .toMatch(/\/inventory\.html$/);
+            await expect(loginPage.currentPage).toHaveURL(/\/inventory\.html$/);
         },
     },
     {
         title: "Login with invalid username",
-        userName: credentials.invalidUser.username,
-        password: credentials.standardUser.password,
+        userToLogin: credentials.invalidUsernameUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.invalidUsername,
@@ -27,8 +29,7 @@ export const testsData = [
     },
     {
         title: "Login with invalid password",
-        userName: credentials.standardUser.username,
-        password: credentials.invalidUser.password,
+        userToLogin: credentials.invalidPasswordUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.invalidPassword,
@@ -37,8 +38,7 @@ export const testsData = [
     },
     {
         title: "Login with empty credentials",
-        userName: "",
-        password: "",
+        userToLogin: credentials.emptyUsernameAndPasswordUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.usernameIsRequired,
@@ -48,8 +48,7 @@ export const testsData = [
     },
     {
         title: "Login with empty username",
-        userName: "",
-        password: credentials.standardUser.password,
+        userToLogin: credentials.emptyUsernameUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.usernameIsRequired,
@@ -58,8 +57,7 @@ export const testsData = [
     },
     {
         title: "Login with empty password",
-        userName: credentials.standardUser.username,
-        password: "",
+        userToLogin: credentials.emptyPasswordUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.passwordIsRequired,
@@ -68,8 +66,7 @@ export const testsData = [
     },
     {
         title: "Login with locked out credentials",
-        userName: credentials.lockedOutUser.username,
-        password: credentials.lockedOutUser.password,
+        userToLogin: credentials.lockedOutUser,
         verify: async (loginPage: LoginPage) => {
             await errorMessageCheck(loginPage.locators.errorMessage, [
                 loginErrors.userIsLockedOut,

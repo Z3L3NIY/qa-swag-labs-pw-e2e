@@ -9,8 +9,8 @@ export class LoginPage extends BasePage {
         super(page);
     }
 
-    public async login(name: string = "", password: string = "") {
-        await this.locators.usernameInput.fill(name);
+    public async login({ username = "", password = "" }) {
+        await this.locators.usernameInput.fill(username);
         await this.locators.passwordInput.fill(password);
         await this.locators.loginButton.click();
     }

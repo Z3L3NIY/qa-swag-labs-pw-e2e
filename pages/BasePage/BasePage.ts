@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 
-export class BasePage {
+export abstract class BasePage {
     protected readonly page: Page;
 
     constructor(page: Page) {
@@ -9,5 +9,9 @@ export class BasePage {
 
     public getUrl() {
         return this.page.url();
+    }
+
+    public get currentPage() {
+        return this.page;
     }
 }
